@@ -21,3 +21,9 @@ jobs:
     - name: Sync files to S3
       run: |
         aws s3 sync ./ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+        
+    - name: Invalidate CloudFront distribution
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id E2VPNM1NBU20OE \
+          --paths "/*"
