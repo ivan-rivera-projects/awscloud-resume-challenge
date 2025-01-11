@@ -108,6 +108,56 @@
       border-radius: 15px;
       margin-top: 20px;
     }
+    
+    form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem; /* Slightly larger font size for labels */
+}
+
+form input, form textarea {
+  width: 90%; /* Responsive width will be adjusted with media query */
+  margin: 0; /* Remove margin for better spacing with flexbox */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+
+form button {
+ display: block; /* Make the button full-width */
+  width: 100%; 
+  background-color: #003163; /* Blue background */
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 20px; /* Adjust padding for button size */
+  border: none; /* Remove border */
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #00234c; /* Darker blue on hover */
+}
+    #feedback-response {
+      text-align: center;
+      margin: 20px auto;
+      font-size: 1.1rem;
+    }
+    
+    
 
     /* Media Queries for Mobile Screens */
     @media (max-width: 768px) {
@@ -123,6 +173,9 @@
       .lightning > * {
         font-size: calc(var(--size) * 5vw); /* Responsive text size */
       }
+form input, form textarea {
+    width: 80%; /* Adjust width for smaller screens */
+  }
 
       nav {
         flex-direction: column;
@@ -239,6 +292,32 @@
       </div>
     </div>
   </section>
+  <section id="feedback">
+      <h2>Send me a message...or...even better...Hire Me.</h2>
+      <div class="skills">
+      <span>LOL!</span><br><br>
+      <span></span>
+      <span>All jokes aside...if you know of a job or opportunity that I can apply for,</span>
+      <span>by all means please let me know.</span><br><br>
+      <span></span>
+      <span>Or...just send me a message about anything, would love to hear from you.</span>
+      <span></span><br><br>
+      <span>Thanks and Take Care!</span>
+    </div>
+      <form id="feedback-form" onsubmit="submitForm(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Your Name" />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="Your Email" />
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required placeholder="Your Feedback"></textarea>
+
+        <button type="submit"><h2>SUBMIT</h2></button>
+      </form>
+      <div id="feedback-response"></div>
+    </section>
   <section id="views" class="views">
     <div>
       <h2>
@@ -270,6 +349,44 @@
     }
   });
 </script>
+
+  <script>
+    async function submitForm(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      const feedback = { name, email, message };
+
+      try {
+        const response = await fetch("https://6b4yf5erzg.execute-api.us-east-1.amazonaws.com/submit-form", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(feedback),
+        });
+
+        const result = await response.json();
+        const feedbackResponse = document.getElementById("feedback-response");
+
+        if (response.ok) {
+          feedbackResponse.innerHTML = "<p>Thank you for your feedback!</p>";
+          feedbackResponse.style.color = "red";
+        } else {
+          feedbackResponse.innerHTML = `<p>Error: ${result.error}</p>`;
+          feedbackResponse.style.color = "red";
+        }
+      } catch (error) {
+        console.error("Error submitting feedback:", error);
+        const feedbackResponse = document.getElementById("feedback-response");
+        feedbackResponse.innerHTML = "<p>An error occurred. Please try again later.</p>";
+        feedbackResponse.style.color = "red";
+      }
+    }
+  </script>
 
 <footer> 
   <p>&copy; 2025 Ivan Rivera | All Rights Reserved</p>
