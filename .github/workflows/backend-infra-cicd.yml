@@ -53,8 +53,14 @@ jobs:
       # --- Testing ---
       - name: Install Python test dependencies (pytest)
         run: pip install pytest # Add other testing frameworks if needed
-      - name: Run Python unit tests
-        run: pytest tests/ # Assumes tests are in the tests/ directory
+      - name: Run Python unit tests (if found)
+        run: |
+          if [ -d "tests" ] && [ -n "$(find tests -maxdepth 1 -name '*.py' -print -quit)" ]; then
+            echo "Running tests..."
+            pytest tests/
+          else
+            echo "No tests found in tests/ directory, skipping."
+          fi
 
       # --- Packaging Lambda Functions ---
       - name: Package CloudResume-ProcessFeedbackForm Lambda
