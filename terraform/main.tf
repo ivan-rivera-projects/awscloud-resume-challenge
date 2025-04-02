@@ -315,12 +315,7 @@ resource "aws_iam_role_policy_attachment" "cors_handler_lambda_attach" {
 ###############################################################################
 # Note: This replaces the previous "EXISTING LAMBDA FUNCTION" block
 
-# Zip the Lambda code
-data "archive_file" "visitor_counter_lambda_zip" {
-  type        = "zip"
-  source_dir  = "../backend/lambda/CloudResume-visit-api/" # Relative to terraform dir
-  output_path = "${path.module}/lambda_zips/CloudResume-visit-api.zip"
-}
+# Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "visitor_counter" {
   function_name    = "CloudResume-visit-api"
@@ -329,8 +324,8 @@ resource "aws_lambda_function" "visitor_counter" {
   runtime          = "python3.10"                     # Or match your specific version
   timeout          = 10                               # Example timeout in seconds
 
-  filename         = data.archive_file.visitor_counter_lambda_zip.output_path
-  source_code_hash = data.archive_file.visitor_counter_lambda_zip.output_base64sha256
+  filename         = "${path.module}/lambda_zips/CloudResume-visit-api.zip" # Reference pre-built zip
+  source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResume-visit-api.zip") # Calculate hash from file
 
   # Add environment variables if needed, e.g., table name
   # environment {
@@ -364,11 +359,7 @@ resource "aws_lambda_function_url" "visitor_counter_url" {
 ###############################################################################
 # LAMBDA FUNCTION (Feedback Form Processor)
 ###############################################################################
-data "archive_file" "feedback_form_lambda_zip" {
-  type        = "zip"
-  source_dir  = "../backend/lambda/CloudResume-ProcessFeedbackForm/" # Relative to terraform dir
-  output_path = "${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip"
-}
+# Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "feedback_form" {
   function_name    = "CloudResume-ProcessFeedbackForm"
@@ -377,8 +368,8 @@ resource "aws_lambda_function" "feedback_form" {
   runtime          = "python3.10" # Or match your specific version
   timeout          = 15           # Allow a bit more time for SES/DynamoDB
 
-  filename         = data.archive_file.feedback_form_lambda_zip.output_path
-  source_code_hash = data.archive_file.feedback_form_lambda_zip.output_base64sha256
+  filename         = "${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip" # Reference pre-built zip
+  source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip") # Calculate hash from file
 
   environment {
     variables = {
@@ -393,11 +384,7 @@ resource "aws_lambda_function" "feedback_form" {
 ###############################################################################
 # LAMBDA FUNCTION (CORS Options Handler)
 ###############################################################################
-data "archive_file" "cors_handler_lambda_zip" {
-  type        = "zip"
-  source_dir  = "../backend/lambda/CloudResumeOptionsHandler/" # Relative to terraform dir
-  output_path = "${path.module}/lambda_zips/CloudResumeOptionsHandler.zip"
-}
+# Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "cors_handler" {
   function_name    = "CloudResume-CorsHandler"
@@ -406,8 +393,8 @@ resource "aws_lambda_function" "cors_handler" {
   runtime          = "python3.10" # Or match your specific version
   timeout          = 5
 
-  filename         = data.archive_file.cors_handler_lambda_zip.output_path
-  source_code_hash = data.archive_file.cors_handler_lambda_zip.output_base64sha256
+  filename         = "${path.module}/lambda_zips/CloudResumeOptionsHandler.zip" # Reference pre-built zip
+  source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResumeOptionsHandler.zip") # Calculate hash from file
 
   tags = merge(var.tags, { Name = "CloudResume-CorsHandlerLambda" })
 }
