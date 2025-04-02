@@ -26,7 +26,7 @@ output "feedback_api_endpoint" {
 output "feedback_api_submit_url" {
   description = "The full URL to POST feedback form submissions to."
   # Note: The route key is hardcoded here; ensure it matches aws_apigatewayv2_route.post_feedback
-  value       = "${aws_apigatewayv2_api.feedback_api.api_endpoint}/submit-form"
+  value = "${aws_apigatewayv2_api.feedback_api.api_endpoint}/submit-form"
 }
 
 output "s3_bucket_name" {

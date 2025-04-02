@@ -13,7 +13,7 @@ terraform {
 
   backend "s3" {
     bucket         = "iam-ivan-terraform-state-bucket" # Use hardcoded value - Variables not allowed in backend block
-    key            = "terraform.tfstate" # Store state at the root of the bucket
+    key            = "terraform.tfstate"               # Store state at the root of the bucket
     region         = "us-east-1"                       # Use hardcoded value - Variables not allowed in backend block
     dynamodb_table = "iam-ivan-terraform-locks"        # Use hardcoded value - Variables not allowed in backend block
     encrypt        = true
@@ -53,8 +53,8 @@ resource "aws_s3_bucket" "website_bucket" {
 # S3 Bucket Policy allowing CloudFront OAC access
 data "aws_iam_policy_document" "s3_oac_policy_doc" {
   statement {
-    actions    = ["s3:GetObject"]
-    resources  = ["${aws_s3_bucket.website_bucket.arn}/*"] # Allow access to all objects in the bucket
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.website_bucket.arn}/*"] # Allow access to all objects in the bucket
 
     principals {
       type        = "Service"
@@ -135,8 +135,8 @@ resource "aws_cloudfront_distribution" "website_distribution" {
 
 
   default_cache_behavior {
-    target_origin_id       = "S3-${var.domain_name}" # Must match origin_id above
-    viewer_protocol_policy = "redirect-to-https"     # Redirect HTTP to HTTPS
+    target_origin_id       = "S3-${var.domain_name}"    # Must match origin_id above
+    viewer_protocol_policy = "redirect-to-https"        # Redirect HTTP to HTTPS
     allowed_methods        = ["GET", "HEAD", "OPTIONS"] # Allow OPTIONS for potential CORS
     cached_methods         = ["GET", "HEAD"]
     compress               = true
@@ -252,8 +252,8 @@ resource "aws_iam_policy" "feedback_form_lambda_policy" {
         Resource = aws_dynamodb_table.feedback_submissions.arn
       },
       {
-        Action   = ["ses:SendEmail"]
-        Effect   = "Allow"
+        Action = ["ses:SendEmail"]
+        Effect = "Allow"
         # SES SendEmail action requires resource "*" or specific verified identities ARN
         Resource = "*"
         # Optional: Add condition to restrict source email if needed
@@ -318,13 +318,13 @@ resource "aws_iam_role_policy_attachment" "cors_handler_lambda_attach" {
 # Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "visitor_counter" {
-  function_name    = "CloudResume-visit-api"
-  role             = aws_iam_role.visitor_counter_lambda_role.arn
-  handler          = "lambda_function.lambda_handler" # Assumes filename is lambda_function.py
-  runtime          = "python3.10"                     # Or match your specific version
-  timeout          = 10                               # Example timeout in seconds
+  function_name = "CloudResume-visit-api"
+  role          = aws_iam_role.visitor_counter_lambda_role.arn
+  handler       = "lambda_function.lambda_handler" # Assumes filename is lambda_function.py
+  runtime       = "python3.10"                     # Or match your specific version
+  timeout       = 10                               # Example timeout in seconds
 
-  filename         = "${path.module}/lambda_zips/CloudResume-visit-api.zip" # Reference pre-built zip
+  filename         = "${path.module}/lambda_zips/CloudResume-visit-api.zip"                   # Reference pre-built zip
   source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResume-visit-api.zip") # Calculate hash from file
 
   # Add environment variables if needed, e.g., table name
@@ -362,13 +362,13 @@ resource "aws_lambda_function_url" "visitor_counter_url" {
 # Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "feedback_form" {
-  function_name    = "CloudResume-ProcessFeedbackForm"
-  role             = aws_iam_role.feedback_form_lambda_role.arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.10" # Or match your specific version
-  timeout          = 15           # Allow a bit more time for SES/DynamoDB
+  function_name = "CloudResume-ProcessFeedbackForm"
+  role          = aws_iam_role.feedback_form_lambda_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.10" # Or match your specific version
+  timeout       = 15           # Allow a bit more time for SES/DynamoDB
 
-  filename         = "${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip" # Reference pre-built zip
+  filename         = "${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip"                   # Reference pre-built zip
   source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResume-ProcessFeedbackForm.zip") # Calculate hash from file
 
   environment {
@@ -387,13 +387,13 @@ resource "aws_lambda_function" "feedback_form" {
 # Note: Lambda code is zipped by the CI/CD workflow into lambda_zips/
 
 resource "aws_lambda_function" "cors_handler" {
-  function_name    = "CloudResume-CorsHandler"
-  role             = aws_iam_role.cors_handler_lambda_role.arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.10" # Or match your specific version
-  timeout          = 5
+  function_name = "CloudResume-CorsHandler"
+  role          = aws_iam_role.cors_handler_lambda_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.10" # Or match your specific version
+  timeout       = 5
 
-  filename         = "${path.module}/lambda_zips/CloudResumeOptionsHandler.zip" # Reference pre-built zip
+  filename         = "${path.module}/lambda_zips/CloudResumeOptionsHandler.zip"                   # Reference pre-built zip
   source_code_hash = filebase64sha256("${path.module}/lambda_zips/CloudResumeOptionsHandler.zip") # Calculate hash from file
 
   tags = merge(var.tags, { Name = "CloudResume-CorsHandlerLambda" })
@@ -423,9 +423,9 @@ resource "aws_apigatewayv2_api" "feedback_api" {
 
 # Integration for the POST request -> Feedback Form Lambda
 resource "aws_apigatewayv2_integration" "feedback_lambda_integration" {
-  api_id           = aws_apigatewayv2_api.feedback_api.id
-  integration_type = "AWS_PROXY" # Standard Lambda proxy integration
-  integration_uri  = aws_lambda_function.feedback_form.invoke_arn
+  api_id                 = aws_apigatewayv2_api.feedback_api.id
+  integration_type       = "AWS_PROXY" # Standard Lambda proxy integration
+  integration_uri        = aws_lambda_function.feedback_form.invoke_arn
   payload_format_version = "2.0" # Use latest payload format
 }
 
@@ -434,9 +434,9 @@ resource "aws_apigatewayv2_integration" "feedback_lambda_integration" {
 # unless you need custom OPTIONS logic beyond what API Gateway provides.
 # Keeping it for now to match the 3-Lambda structure, but consider simplifying.
 resource "aws_apigatewayv2_integration" "cors_lambda_integration" {
-  api_id           = aws_apigatewayv2_api.feedback_api.id
-  integration_type = "AWS_PROXY"
-  integration_uri  = aws_lambda_function.cors_handler.invoke_arn
+  api_id                 = aws_apigatewayv2_api.feedback_api.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.cors_handler.invoke_arn
   payload_format_version = "2.0"
 }
 
@@ -543,7 +543,7 @@ resource "aws_route53_record" "www_subdomain_ipv6" {
 resource "aws_dynamodb_table" "visitor_counter" {
   name         = "CloudResume-Visit" # Keep original name if it exists
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "id"                # Partition key
+  hash_key     = "id" # Partition key
 
   # Define attributes used in keys or indexes
   attribute {
