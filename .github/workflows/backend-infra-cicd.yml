@@ -1,0 +1,94 @@
+name: Backend and Infrastructure CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+    # Trigger only on changes in specific paths within the main branch
+    paths:
+      - 'backend/**'
+      - 'terraform/**'
+      - '.github/workflows/backend-infra-cicd.yml'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy-backend-infra:
+    runs-on: ubuntu-latest
+    # Recommended: Configure OIDC permissions here
+    # permissions:
+    #   id-token: write
+    #   contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Use latest version
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Or your desired Python version
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        # with:
+        #   terraform_version: '1.x.x' # Specify version if needed
+
+      # --- Configure AWS Credentials (Using Secrets - OIDC Recommended) ---
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4 # Use latest version
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # Or your desired region
+
+      # --- Linting ---
+      - name: Lint Python code (flake8)
+        run: |
+          pip install flake8
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 backend/lambda/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 backend/lambda/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive ./terraform
+
+      # --- Testing ---
+      - name: Install Python test dependencies (pytest)
+        run: pip install pytest # Add other testing frameworks if needed
+      - name: Run Python unit tests
+        run: pytest tests/ # Assumes tests are in the tests/ directory
+
+      # --- Packaging Lambda Functions ---
+      - name: Package CloudResume-ProcessFeedbackForm Lambda
+        run: |
+          cd backend/lambda/CloudResume-ProcessFeedbackForm
+          zip ../../../terraform/lambda_zips/CloudResume-ProcessFeedbackForm.zip lambda_function.py
+          cd ../../.. # Return to root
+      - name: Package CloudResume-visit-api Lambda
+        run: |
+          cd backend/lambda/CloudResume-visit-api
+          zip ../../../terraform/lambda_zips/CloudResume-visit-api.zip lambda_function.py
+          cd ../../..
+      - name: Package CloudResumeOptionsHandler Lambda
+        run: |
+          cd backend/lambda/CloudResumeOptionsHandler
+          zip ../../../terraform/lambda_zips/CloudResumeOptionsHandler.zip lambda_function.py
+          cd ../../..
+
+      # --- Terraform Steps ---
+      - name: Terraform Init
+        id: init
+        run: terraform -chdir=./terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform -chdir=./terraform validate
+
+      # --- Terraform Plan ---
+      - name: Terraform Plan
+        id: plan
+        run: terraform -chdir=./terraform plan -no-color
+        # continue-on-error: true # Uncomment if you want the workflow to continue even if the plan fails (e.g., to see output)
+
+      # --- Terraform Apply (Only on main branch push) ---
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform -chdir=./terraform apply -auto-approve -no-color
