@@ -18,9 +18,35 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'us-east-1'
 
-    - name: Sync files to S3
+    - name: Prepare deployment package
       run: |
-        aws s3 sync ./ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+        mkdir deployment_package
+        cp index.html deployment_package/
+        # Copy directories if they exist
+        if [ -d "images" ]; then
+          echo "Copying images directory..."
+          cp -r images/ deployment_package/images/
+        else
+          echo "images directory not found, skipping."
+        fi
+        if [ -d "css" ]; then
+          echo "Copying css directory..."
+          cp -r css/ deployment_package/css/
+        else
+          echo "css directory not found, skipping."
+        fi
+        if [ -d "js" ]; then
+          echo "Copying js directory..."
+          cp -r js/ deployment_package/js/
+        else
+          echo "js directory not found, skipping."
+        fi
+        echo "Deployment package contents:"
+        ls -R deployment_package
+
+    - name: Sync deployment package to S3
+      run: |
+        aws s3 sync ./deployment_package s3://${{ secrets.AWS_S3_BUCKET }} --delete
         
     - name: Invalidate CloudFront distribution
       run: |
