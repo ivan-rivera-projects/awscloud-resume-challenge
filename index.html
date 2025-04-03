@@ -139,7 +139,95 @@ form button:hover {
   margin: 20px auto;
   font-size: 1.1rem;
 }
-/* Media Queries for Mobile Screens */
+
+/* Project Section Styles */
+#projects {
+  /* Add specific styles if needed, inherits from section */
+}
+
+.projects-container {
+  /* Cards will stack by default */
+  gap: 20px;
+}
+
+/* Default: Desktop Centered Stack Layout */
+.project-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 20px; /* Add space between stacked cards */
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.project-thumbnail {
+  width: auto; /* Auto width */
+  max-width: 80%; /* Limit width */
+  height: 180px; /* Fixed height */
+  object-fit: contain; /* Show entire image, may letterbox */
+  object-position: center center; /* Center the contained image */
+  border-radius: 4px;
+  margin-bottom: 15px;
+  /* background-color: #eee; /* Removed placeholder background */
+}
+
+.project-content {
+  /* Wrapper for text content */
+  width: 100%; /* Ensure it takes width for text-align */
+}
+
+.project-card h3 {
+  margin-top: 0;
+  color: #003163;
+  /* text-align is handled by .project-card default */
+}
+
+.project-card p {
+  font-size: 0.9em;
+  flex-grow: 1; /* Allow description to take available space */
+  margin-bottom: 15px;
+   /* text-align is handled by .project-card default */
+}
+
+.project-links {
+  margin-top: auto; /* Push links to the bottom */
+  display: flex;
+  justify-content: center; /* Default: Center buttons */
+  gap: 10px;
+  width: 100%; /* Ensure links container takes width for centering */
+}
+
+.project-link-btn {
+  display: inline-block;
+  background-color: #003163;
+  color: white;
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.85em;
+  text-align: center;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+  flex: 0 1 120px; /* Don't grow, allow shrink, basis 120px */
+}
+
+.project-link-btn:hover {
+  background-color: #00234c;
+  color: white;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
   body {
     background: url('images/ivanresumebackground1-mobile.jpeg') no-repeat center center;
@@ -165,7 +253,33 @@ form button:hover {
   section {
     padding: 20px;
   }
-}
+
+  /* Mobile Project Card Layout: Side-by-side */
+  .project-card {
+    flex-direction: row; /* Image left, content right */
+    align-items: flex-start; /* Align items to the top */
+    text-align: left; /* Align text left */
+  }
+  .project-thumbnail {
+    flex: 0 0 100px; /* Don't grow, don't shrink, basis 100px */
+    width: 100px;
+    height: auto; /* Auto height based on width */
+    max-width: 100px; /* Ensure max-width matches */
+    margin-right: 15px; /* Space between image and text */
+    margin-bottom: 0; /* Remove bottom margin */
+    object-fit: contain; /* Ensure contain is used on mobile too */
+  }
+  .project-content {
+     flex: 1; /* Allow text content to take remaining space */
+  }
+  .project-links {
+     justify-content: flex-start; /* Align buttons left */
+     width: auto; /* Reset width */
+  }
+  .project-link-btn {
+      flex: 0 1 auto; /* Adjust button flex for mobile if needed */
+  }
+} /* Close @media */
 </style>
 </head>
 <body>
@@ -176,10 +290,12 @@ form button:hover {
   </div>
   <nav>
     <a href="#profile">Profile</a>
-    <a href="#certifications">Certifications</a>
+    <a href="#projects">Projects</a>
     <a href="#experience">Experience</a>
     <a href="#skills">Skills</a>
-    <a href="projects">Projects</a>
+    <a href="#certifications">Certifications</a>
+    <!-- Removed Hands-on-Lab, Education, Languages from main nav for brevity -->
+    <a href="#feedback">Contact</a>
   </nav>
 </header>
 <div class="container">
@@ -187,14 +303,48 @@ form button:hover {
     <h2>Profile</h2>
     <p>Dynamic IT professional with a strong background in networking, cloud infrastructure, and database administration. Proven expertise in AWS, system optimization, and IT support with a focus on seamless operations and security. Hands-on experience in building, troubleshooting, and maintaining cloud and hybrid environments. Accomplished in deploying scalable solutions, automating processes, and training users to maximize efficiency. Certified in CompTIA A+ and Network+, with a comprehensive understanding of cloud-native tools and modern networking concepts.</p>
   </section>
-  <section id="certifications">
-    <h2>Certifications</h2>
-    <ul>
-      <li>CompTIA A+ Certification</li>
-      <li>AWS Certified Cloud Practitioner</li>
-      <li>AWS Certified Solutions Architect Associate (In Progress)</li>
-    </ul>
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-container">
+      <!-- Project Card 1 -->
+      <div class="project-card">
+        <img src="images/aws-fingers-1.png" alt="Project 1 Thumbnail" class="project-thumbnail">
+        <div class="project-content"> <!-- Added wrapper -->
+          <h3>Customized AWS Cloud Resume Challenge</h3>
+          <p>An enhanced version of the AWS Cloud Resume Challenge.</p>
+          <div class="project-links">
+            <a href="https://iam-ivan.com" target="_blank" class="project-link-btn">Live Site</a>
+            <a href="https://github.com/ivan-rivera-projects/awscloud-resume-challenge" target="_blank" class="project-link-btn">GitHub Repo</a>
+          </div>
+        </div> <!-- Closed wrapper -->
+      </div>
+      <!-- Project Card 2 -->
+      <div class="project-card">
+         <img src="images/aws-fingers-2.png" alt="Project 2 Thumbnail" class="project-thumbnail">
+         <div class="project-content"> <!-- Added wrapper -->
+           <h3>BinarySoftwear AWS Infrastructure</h3>
+           <p>Binary Softwear...computer culture lifestyle brand for the IT crowd. A Woocommerce Instance on the AWS Platform.</p>
+           <div class="project-links">
+            <a href="https://binarysoftwear.com" target="_blank" class="project-link-btn">Live Site</a>
+            <a href="https://github.com/ivan-rivera-projects/BinarySoftwear-AWS-infrastructure-with-Terraform" target="_blank" class="project-link-btn">GitHub Repo</a>
+          </div>
+        </div> <!-- Closed wrapper -->
+      </div>
+      <!-- Project Card 3 -->
+      <div class="project-card">
+         <img src="images/aws-fingers-3.png" alt="Project 3 Thumbnail" class="project-thumbnail">
+         <div class="project-content"> <!-- Added wrapper -->
+           <h3>Wagwan London AI Chatbot</h3>
+           <p>A cloud-native conversational AI with authentic South London vibes, powered by AWS serverless architecture.</p>
+           <div class="project-links">
+            <a href="https://wagwan.london" target="_blank" class="project-link-btn">Live Site</a>
+            <a href="https://github.com/ivan-rivera-projects/wagwan-london-chatbot" target="_blank" class="project-link-btn">GitHub Repo</a>
+          </div>
+        </div> <!-- Closed wrapper -->
+      </div>
+    </div>
   </section>
+  <!-- Experience Section (Moved) -->
   <section id="experience" class="experience">
     <h2>Experience</h2>
     <div>
@@ -229,44 +379,32 @@ form button:hover {
       </ul>
     </div>
   </section>
-  <section id="hands-on-lab-experience" class="hands-on-lab-experience">
-    <h2>Hands-On Lab Experience</h2>
-    <ul>
-      <li>Networking: Designed Virtual Private Clouds (VPCs) with subnets, gateways, and security groups in AWS. Configured VPNs for hybrid cloud setups.</li>
-      <li>Linux Administration: Installed and managed Apache, PHP, MySQL, and WordPress on EC2 instances. Automated routine tasks using bash scripting.</li>
-      <li>Cloud Migration: Deployed and managed web applications in AWS, including integrating Route 53 for DNS and SSL configurations.</li>
-      <li>Security: Configured security groups and IAM policies to secure cloud environments, including testing penetration scenarios and monitoring logs.</li>
-      <li>Database Operations: Performed database backups and restores, optimized queries, and automated tasks using shell scripts.</li>
-    </ul>
-  </section>
-  <section id="education" class="education">
-    <h2>Education</h2>
-    <p><b>Florida A&M University</b><br>Psychology, 1994 - 2000</p>
-  </section>
+  <!-- Skills Section (Moved) -->
+  <!-- Hands-on Lab Experience Section (Removed/Merged into Skills/Experience) -->
+  <!-- Education Section (Removed for brevity, can be added back if desired) -->
   <section id="skills" class="skills">
     <h2>Skills</h2>
     <div class="skills">
       <span>Networking: VPCs, DNS, DHCP, VPNs, Subnetting, Firewall Configuration</span>
-      <span>Cloud: AWS (EC2, S3, Route 53, VPC), Cloud Migration, Automation</span>
+      <span>Cloud: AWS (EC2, S3, Route 53, VPC, Lambda, API Gateway, DynamoDB, SES, CloudFront, WAF, ACM), Cloud Migration, Automation (Terraform, GitHub Actions)</span>
       <span>Operating Systems: Linux (CentOS, Amazon Linux 2), MacOS, Windows Server</span>
-      <span>Database Management: Oracle, MySQL, Intersystem’s Cache, SQL Scripting</span>
-      <span>Web Technologies: Apache, WordPress, Shopify, SSL/TLS</span>
-      <span>Security: IAM Policies, Security Groups, Penetration Testing, SSL Certificate Deployment</span>
-      <span>Troubleshooting: Remote Access, Client-Side Support, System Optimization</span>
-      <span>Tools: Wireshark, Certbot, VirtualBox, Git</span>
+      <span>Database Management: Oracle, MySQL, Intersystem’s Cache, DynamoDB, SQL Scripting</span>
+      <span>Web Technologies: Apache, WordPress, Shopify, HTML, CSS, JavaScript, REST APIs, SSL/TLS</span>
+      <span>Security: IAM Policies, Security Groups, WAF, OAC, Penetration Testing Concepts, SSL Certificate Deployment</span>
+      <span>Troubleshooting: Remote Access, Client-Side Support, System Optimization, CloudWatch Logs</span>
+      <span>Tools: Wireshark, Certbot, VirtualBox, Git, Terraform, GitHub Actions</span>
     </div>
   </section>
-  <section id="languages" class="languages">
-    <h2>Languages</h2>
-    <div style="display: flex; gap: 50px; align-items: center; justify-content: space-between;">
-      <div style="flex: 1;">
-        <ul>
-          <li>English (Fluent)</li>
-          <li>Spanish (Fluent)</li>
-        </ul>
-      </div>
-    </div>
+  <!-- Certifications Section (Moved) -->
+  <section id="certifications">
+    <h2>Certifications</h2>
+    <ul>
+      <li>CompTIA A+ Certification</li>
+      <li>AWS Certified Cloud Practitioner</li>
+      <li>AWS Certified Solutions Architect Associate (In Progress)</li>
+    </ul>
   </section>
+  <!-- Languages Section (Removed for brevity, can be added back if desired) -->
   <script>
   async function submitForm(event) {
     event.preventDefault();
