@@ -8,9 +8,11 @@ from diagrams.aws.security import WAF, ACM # Added ACM import
 # SES import removed as we'll use Custom
 from diagrams.aws.general import Users
 from diagrams.custom import Custom # Import Custom class
-
+from diagrams.onprem.vcs import Github # Added GitHub
+from diagrams.onprem.ci import GithubActions # Added GitHub Actions
+from diagrams.onprem.iac import Terraform # Added Terraform
 # Define the diagram
-with Diagram("iam-ivan.com AWS Architecture", show=False, direction="LR"):
+with Diagram("iam-ivan.com AWS CLOUD RESUME CHALLENGE Architecture", show=False, direction="LR"):
     # User accessing the system
     user = Users("Website Users")
     admin_user = Users("Admin Email") # Added recipient user
@@ -44,6 +46,12 @@ with Diagram("iam-ivan.com AWS Architecture", show=False, direction="LR"):
             dynamodb_visits = Dynamodb("DynamoDB (Visitor Count)")
             dynamodb_feedback = Dynamodb("DynamoDB (Feedback Data)")
 
+    # CI/CD Pipeline Components
+    with Cluster("CI/CD Pipeline"):
+        github_repo = Github("GitHub Repo")
+        github_actions = GithubActions("GitHub Actions")
+        terraform_tool = Terraform("Terraform")
+
     # Define Connections
     user >> Edge(label="HTTPS", color="black", penwidth="2.0") >> route53
     route53 >> Edge(label="DNS Resolution", color="black", penwidth="2.0") >> cloudfront
@@ -72,3 +80,15 @@ with Diagram("iam-ivan.com AWS Architecture", show=False, direction="LR"):
     lambda_feedback >> Edge(label="Write Feedback", color="purple", penwidth="2.0") >> dynamodb_feedback
     lambda_feedback >> Edge(label="Send Email", color="orange", penwidth="2.0") >> ses # Added Lambda -> SES edge
     ses >> Edge(label="Notification", style="dashed", color="orange", penwidth="2.0") >> admin_user # Added SES -> Admin edge
+
+    # CI/CD Connections
+    github_repo >> Edge(label="Push to main") >> github_actions
+    github_actions >> Edge(label="Deploy Frontend", color="blue", style="dashed") >> s3_bucket
+    github_actions >> Edge(label="Run Terraform", color="red", style="dashed") >> terraform_tool
+    # Show Terraform managing the backend resources it creates/updates
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> api_gw
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> lambda_visitor
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> lambda_feedback
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> lambda_cors
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> dynamodb_visits
+    terraform_tool >> Edge(label="Manages", color="red", style="dashed") >> dynamodb_feedback
