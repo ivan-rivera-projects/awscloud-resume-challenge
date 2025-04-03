@@ -76,7 +76,7 @@ The architecture leverages serverless and managed AWS services to create a scala
 
 ### Architecture Diagram
 
-![Architecture Diagram](documentation/iam-ivan.com_aws_architecture.png)
+![Architecture Diagram](documentation/iam-ivan.com_aws_cloud_resume_challenge_architecture.png)
 *(Diagram generated via `python documentation/iam-ivan_aws_architecture.py`)*
 
 ### Core Components Breakdown
