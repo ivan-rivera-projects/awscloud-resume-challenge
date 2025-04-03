@@ -143,8 +143,8 @@ form button:hover {
 @media (max-width: 768px) {
   body {
     background: url('images/ivanresumebackground1-mobile.jpeg') no-repeat center center;
-    background-size: contain;
-    background-attachment: scroll;
+    background-size: cover;
+    background-attachment: fixed; /* Note: May have performance/compatibility issues on some mobile browsers */
   }
   .lightning {
     flex-direction: column;
