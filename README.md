@@ -1,5 +1,7 @@
 # AWS Cloud Resume Challenge: iam-ivan.com
 
+![AWS Cloud Resume Challenge Banner](./documentation/aws-cloud-resume-github.jpeg)
+
 [![AWS](https://img.shields.io/badge/Infrastructure-AWS-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
 [![Terraform](https://img.shields.io/badge/IaC-Terraform-623CE4?style=for-the-badge&logo=terraform)](https://www.terraform.io/)
 [![Python](https://img.shields.io/badge/Backend-Python-3776AB?style=for-the-badge&logo=python)](https://www.python.org/)
