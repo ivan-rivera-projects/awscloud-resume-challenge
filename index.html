@@ -23,6 +23,7 @@ body {
   background: url('images/ivanresumebackground1.jpeg') no-repeat center center fixed;
   background-size: cover;
   color: #333;
+  font-size: 20px; /* Further increased base font size */
 }
 .container {
   max-width: 1200px;
@@ -88,6 +89,13 @@ section {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* Adjust font size/weight for paragraphs and list items in sections, EXCLUDING #projects */
+section:not(#projects) p,
+section:not(#projects) li {
+  font-size: 0.9em;   /* Further reduced size */
+  font-weight: 400;  /* Explicitly set regular weight */
+  line-height: 1.5;  /* Adjusted line height */
 }
 footer {
   text-align: center;
@@ -178,7 +186,6 @@ form button:hover {
   object-position: center center; /* Center the contained image */
   border-radius: 4px;
   margin-bottom: 15px;
-  /* background-color: #eee; /* Removed placeholder background */
 }
 
 .project-content {
@@ -189,7 +196,6 @@ form button:hover {
 .project-card h3 {
   margin-top: 0;
   color: #003163;
-  /* text-align is handled by .project-card default */
 }
 
 .project-card p {
@@ -280,6 +286,30 @@ form button:hover {
       flex: 0 1 auto; /* Adjust button flex for mobile if needed */
   }
 } /* Close @media */
+
+/* Scroll to Top Button Styles */
+#scrollToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #003163; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+  opacity: 0.7; /* Slightly transparent */
+  transition: opacity 0.3s;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #00234c; /* Add a dark-grey background on hover */
+  opacity: 1; /* Fully opaque on hover */
+}
 </style>
 </head>
 <body>
@@ -288,20 +318,23 @@ form button:hover {
     <div>IVAN</div>
     <div>RIVERA</div>
   </div>
+<br>
   <nav>
     <a href="#profile">Profile</a>
     <a href="#projects">Projects</a>
     <a href="#experience">Experience</a>
     <a href="#skills">Skills</a>
     <a href="#certifications">Certifications</a>
-    <!-- Removed Hands-on-Lab, Education, Languages from main nav for brevity -->
+   
     <a href="#feedback">Contact</a>
+    <a href="https://s3.us-east-1.amazonaws.com/iam-ivan.com/images/Ivan+Rivera+AWS+Resume.pdf" target="_blank">RESUME (PDF)</a>
   </nav>
+
 </header>
 <div class="container">
   <section id="profile">
     <h2>Profile</h2>
-    <p>Dynamic IT professional with a strong background in networking, cloud infrastructure, and database administration. Proven expertise in AWS, system optimization, and IT support with a focus on seamless operations and security. Hands-on experience in building, troubleshooting, and maintaining cloud and hybrid environments. Accomplished in deploying scalable solutions, automating processes, and training users to maximize efficiency. Certified in CompTIA A+ and Network+, with a comprehensive understanding of cloud-native tools and modern networking concepts.</p>
+    <p>AWS Cloud Practitioner (Solutions Architect Associate in progress) with over a decade of IT experience spanning systems administration, database management, and infrastructure support. Transitioning to cloud technologies with hands-on expertise in AWS serverless architectures and Infrastructure as Code. Combines deep on-premises knowledge with emerging cloud skills to design scalable, resilient, and cost-effective solutions. Seeking an entry-level AWS/DevOps position to leverage comprehensive IT background while expanding cloud expertise in a professional environment.</p>
   </section>
   <section id="projects">
     <h2>Projects</h2>
@@ -344,67 +377,90 @@ form button:hover {
       </div>
     </div>
   </section>
-  <!-- Experience Section (Moved) -->
-  <section id="experience" class="experience">
+  <section id="experience">
     <h2>Experience</h2>
     <div>
-      <h3>E-Commerce System Manager - LGGS, LLC</h3>
-      <p><i>March 2014 - October 2024</i></p>
+      <h3>CLOUD & E-COMMERCE PLATFORM ADMINISTRATOR | LGGS LLC, KISSIMMEE, FL</h3>
+      <p><i>MARCH 2014 - NOV 2024</i></p>
       <ul>
-        <li>AWS Cloud Infrastructure: Migrated on-premises environments to AWS, leveraging EC2, VPC, and S3 for secure and scalable operations.</li>
-        <li>Website Management: Maintained and optimized a LAMP stack, transitioning to Shopify for enhanced e-commerce functionality.</li>
-        <li>Technical Support: Resolved complex issues in Linux, MacOS, and Windows environments to ensure business continuity.</li>
-        <li>Networking and DNS: Configured DNS records for website hosting and integrated SSL certificates for secure transactions.</li>
+        <li>Website Design, CMS and E-Commerce Management: Designed, maintained and optimized a Woocommerce LAMP stack, integrating and unifying online marketing , social media and email marketing.</li>
+        <li>Led transition from LAMP stack to cloud infrastructure for e-commerce platform (WooCommerce).</li>
+        <li>Built and maintained secure, scalable hosting with SSL and DNS management (Route 53).</li>
+        <li>Administered Linux servers, integrated marketing automation, and developed CMS extensions.</li>
         <li>Team Leadership: Collaborated cross-functionally to align IT strategies with business objectives.</li>
       </ul>
     </div>
     <div>
-      <h3>Database Administrator & System Specialist - Florida Department of Health</h3>
-      <p><i>August 2002 - January 2014</i></p>
+      <h3>DATABASE CONSULTANT | FLORIDA DEPARTMENT OF HEALTH, TALLAHASSEE, FL</h3>
+      <p><i>AUGUST 2002 - JAN 2014</i></p>
       <ul>
+        <li>Database Management: Administered Oracle and Cache databases, supporting mission critical in-house applications, performance tuning, database support to on-premise dev, test and prod environments, provided documentation, curriculum, training and support to 67 statewide system administrators, handled all backups and disaster recovery implementations, optimizing query and database performance.</li>
         <li>Networking Protocols: Implemented and managed DNS, DHCP, and VPN configurations across distributed systems.</li>
-        <li>Cloud and Virtualization: Supported migration projects involving regional data centers and virtualized database environments.</li>
-        <li>Database Management: Administered Oracle and Cache databases, performing fault-tolerant backups and optimizing query performance.</li>
+        <li>Distributed Systems and Virtualization: Supported migration projects involving the consolidation of 67 independent sites to regional data centers and virtualized database environments.</li>
         <li>Training & Documentation: Developed system administrator training materials for 67 counties, ensuring consistent support practices statewide.</li>
         <li>Client-Side Support: Delivered comprehensive support for hardware and software systems, reducing downtime and improving user productivity.</li>
+        <li>System Upgrades: Conducted system-wide updates and database upgrades to improve reliability and scalability.</li>
+        <li>Technical Support: Provided end-user support for database-driven applications, enhancing operational efficiency.</li>
       </ul>
     </div>
     <div>
-      <h3>Junior Database Administrator - Florida State University Center for Professional Development</h3>
-      <p><i>May 2001 - July 2002</i></p>
+      <h3>JUNIOR DATABASE ADMINISTRATOR | FLORIDA STATE UNIVERSITY - CENTER FOR PROFESSIONAL DEVELOPMENT, TALLAHASSEE, FL</h3>
+      <p><i>MAY 2001 - JULY 2002</i></p> <!-- Corrected date from PDF -->
       <ul>
-        <li>Database Administration: Maintained Oracle databases, ensuring data integrity and optimizing performance on Sun Microsystems Solaris servers.</li>
-        <li>System Upgrades: Conducted system-wide updates and database upgrades to improve reliability and scalability.</li>
-        <li>Technical Support: Provided end-user support for database-driven applications, enhancing operational efficiency.</li>
+        <li>Server Management: Sun Microsystems Solaris servers for FSU’s Center for Professional Development, ensuring high availability and performance for database applications. Windows Server Platform + Windows Client</li>
+        <li>Database Administration: Administered Oracle databases, overseeing maintenance, backup, and data integrity to support the Center’s operations.</li>
+        <li>SQL Scripting & Reporting: Created SQL scripts and generated management reports to support decision-making processes within the Center.</li>
+        <li>Performance Tuning and Upgrades: Conducted performance tuning and coordinated database upgrades to enhance system efficiency and functionality.</li>
+        <li>Instructor: Taught the Oracle Certified Professional Curriculum for Oracle 8 and 8i database administration courses.</li>
       </ul>
     </div>
   </section>
   <!-- Skills Section (Moved) -->
   <!-- Hands-on Lab Experience Section (Removed/Merged into Skills/Experience) -->
   <!-- Education Section (Removed for brevity, can be added back if desired) -->
-  <section id="skills" class="skills">
+  <section id="skills">
     <h2>Skills</h2>
-    <div class="skills">
-      <span>Networking: VPCs, DNS, DHCP, VPNs, Subnetting, Firewall Configuration</span>
-      <span>Cloud: AWS (EC2, S3, Route 53, VPC, Lambda, API Gateway, DynamoDB, SES, CloudFront, WAF, ACM), Cloud Migration, Automation (Terraform, GitHub Actions)</span>
-      <span>Operating Systems: Linux (CentOS, Amazon Linux 2), MacOS, Windows Server</span>
-      <span>Database Management: Oracle, MySQL, Intersystem’s Cache, DynamoDB, SQL Scripting</span>
-      <span>Web Technologies: Apache, WordPress, Shopify, HTML, CSS, JavaScript, REST APIs, SSL/TLS</span>
-      <span>Security: IAM Policies, Security Groups, WAF, OAC, Penetration Testing Concepts, SSL Certificate Deployment</span>
-      <span>Troubleshooting: Remote Access, Client-Side Support, System Optimization, CloudWatch Logs</span>
-      <span>Tools: Wireshark, Certbot, VirtualBox, Git, Terraform, GitHub Actions</span>
-    </div>
+    <ul>
+      <li><strong>Cloud Platforms:</strong> Amazon Web Services (AWS)</li>
+      <li><strong>AWS Services:</strong> S3, CloudFront, Lambda, API Gateway, DynamoDB, Route 53, IAM, CloudWatch, CloudFormation, VPC, EC2</li>
+      <li><strong>Infrastructure as Code:</strong> Terraform, AWS CDK</li>
+      <li><strong>DevOps:</strong> CI/CD, GitHub Actions</li>
+      <li><strong>Operating Systems:</strong> Linux, Unix, Windows Server</li>
+      <li><strong>Programming Languages:</strong> JavaScript, Python, SQL, PowerShell, Bash</li>
+      <li><strong>Version Control:</strong> Git, GitHub</li>
+      <li><strong>Web Technologies:</strong> HTML, CSS, JavaScript</li>
+      <li><strong>Databases:</strong> Oracle, SQL Server, MySQL, PostgreSQL, InterSystems Caché, DynamoDB, NoSQL</li>
+      <li><strong>Database Administration:</strong> Performance tuning, disaster recovery, replication, clustering, high availability</li>
+      <li><strong>Monitoring:</strong> CloudWatch, enterprise monitoring tools</li>
+      <li><strong>Security:</strong> Access control, encryption, security best practices</li>
+      <li><strong>Others:</strong> RESTful APIs, Serverless Architecture, System Architecture Design, Troubleshooting, Documentation, Technical Training, Data Center Operations</li>
+    </ul>
   </section>
   <!-- Certifications Section (Moved) -->
   <section id="certifications">
     <h2>Certifications</h2>
     <ul>
-      <li>CompTIA A+ Certification</li>
-      <li>AWS Certified Cloud Practitioner</li>
-      <li>AWS Certified Solutions Architect Associate (In Progress)</li>
+      <li><strong>CompTIA A+</strong><br>Issued Nov 2024 · Expires Nov 2027<br>Credential ID COMP001022629571</li>
+      <li><strong>AWS Certified Cloud Practitioner</strong><br>Issued Jan 2025 · Expires Jan 2028<br>Credential ID be864e2827ef4a0a8fa8bcea242725cb</li>
+      <li><strong>AWS Solutions Architect Associate (SAA-003)</strong><br>In Progress projected to complete by May 2025</li>
     </ul>
   </section>
-  <!-- Languages Section (Removed for brevity, can be added back if desired) -->
+  <section id="education">
+      <h2>Education</h2>
+      <p><strong>FLORIDA A&M UNIVERSITY — BA 2000-2004</strong></p> <!-- Corrected date from PDF -->
+      <h3>Relevant Coursework or Training</h3>
+      <p><strong>AWS Cloud Institute – Amazon Web Services (In Progress)</strong></p>
+      <p>Enrolled in AWS’s official cloud career training program focused on full-stack cloud development. Curriculum includes:</p>
+      <ul>
+          <li>9 instructor led courses with 150+ hands-on AWS labs and 2 real-world capstone projects</li>
+          <li>Certification prep for AWS Solutions Architect and Developer – Associate</li>
+          <li>Building a portfolio of production-grade, cloud-native applications</li>
+      </ul>
+  </section>
+  <section id="languages">
+      <h2>Languages</h2>
+      <p>English (fluent), Spanish (fluent)</p>
+  </section>
   <script>
   async function submitForm(event) {
     event.preventDefault();
@@ -468,5 +524,32 @@ form button:hover {
 <footer>
   <p>&copy; 2025 Ivan Rivera | All Rights Reserved</p>
 </footer>
+
+<!-- Scroll to Top Button HTML -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">&uarr;</button>
+
+<script>
+// Scroll to Top Button JavaScript
+//Get the button
+var mybutton = document.getElementById("scrollToTopBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  // Use smooth scrolling
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+
 </body>
 </html>
